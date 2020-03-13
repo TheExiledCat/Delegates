@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         h = GetComponent<Health>();
-        h.g = gameObject;
+       
     }
    
     void OnMouseDown()

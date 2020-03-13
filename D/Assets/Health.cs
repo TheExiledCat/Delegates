@@ -1,55 +1,53 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class Health : MonoBehaviour
 {
     [SerializeField]
     int health, maxHealth;
-    NumberShower n;
-    public GameObject g;
+ 
+  
+    public event Action OnHealthChange;
+    public event Action OnDie;
     public int GetHealth()
     {
         return health;
     }
-    
+   
     public void LoseHealth(int amount)
     {
-
+        
         health -= amount;
         if (health == 0)
         {
             Die();
         }
-       
-            UpdateUI(health);
-        
-       
+        if(OnHealthChange!=null)
+        OnHealthChange();
+
+
     }
-    public void Heal(int amount)
-    {
-        UpdateUI(health);
-    }
+   
     public void SetHealth(int amount)
     {
         maxHealth = amount;
         health = maxHealth;
-        UpdateUI(health);
+        
     }
     void Start()
     {
-        n = GameObject.FindGameObjectWithTag("UI").GetComponent<NumberShower>();
-        n.word = "HP";
-        health = maxHealth;
-        UpdateUI(health);
+
+        SetHealth(maxHealth);
+        
+        
     }
-    void UpdateUI(int numb)
-    {
-        n.number = numb;
-    }
+    
     void Die()
     {
-        Destroy(g);
+        if(OnDie!=null)
+        OnDie();
+        Destroy(gameObject);
         
     }
 }
